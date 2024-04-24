@@ -6,7 +6,8 @@ import (
 	"net/http"
 	"os/exec"
 	"sync"
-    "github.com/dimanchick22/GO/pkg/mock"
+
+	mock "github.com/dimanchick22/my_app_go/pkg/mock"
 )
 
 // Registry хранит информацию о зарегистрированных мок-сервисах
