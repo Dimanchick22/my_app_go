@@ -17,6 +17,17 @@ func main() {
         fmt.Fprintf(w, "Hello from mock service on port %d!", *portPtr)
     })
 
+    // Добавляем обработчик для эндпоинта /info
+    http.HandleFunc("/info", func(w http.ResponseWriter, r *http.Request) {
+        fmt.Fprintf(w, "Information about the mock service running on port %d", *portPtr)
+    })
+
+    // Добавляем обработчик для эндпоинта /health
+    http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+        w.WriteHeader(http.StatusOK)
+        w.Write([]byte("OK"))
+    })
+
     // Преобразуем порт в строку для передачи в ListenAndServe
     port := ":" + strconv.Itoa(*portPtr)
     fmt.Printf("Mock service is running on port %s\n", port)
