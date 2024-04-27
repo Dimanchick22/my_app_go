@@ -78,44 +78,10 @@ func getMockServicesInfoHandler(w http.ResponseWriter, r *http.Request) {
     w.Write(jsonBytes)
 }
 
-func stopMockServiceHandler(w http.ResponseWriter, r *http.Request) {
-    // Проверяем, был ли передан параметр "port" в запросе
-    port := r.URL.Query().Get("port")
-    if port == "" {
-        http.Error(w, "Port parameter is required", http.StatusBadRequest)
-        return
-    }
-
-    // Пытаемся преобразовать порт в число
-    portInt, err := strconv.Atoi(port)
-    if err != nil {
-        http.Error(w, "Invalid port number", http.StatusBadRequest)
-        return
-    }
-
-    // Формируем команду для остановки мок-сервиса
-    cmd := exec.Command("kill", "-9", strconv.Itoa(portInt))
-
-    // Запускаем команду
-    if err := cmd.Run(); err != nil {
-        http.Error(w, "Failed to stop mock service: "+err.Error(), http.StatusInternalServerError)
-        return
-    }
-
-    // Удаляем мок-сервис из реестра
-    mutex.Lock()
-    defer mutex.Unlock()
-    delete(Registry, port)
-
-    fmt.Printf("Mock service on port %s stopped successfully\n", port)
-    w.WriteHeader(http.StatusOK)
-    w.Write([]byte("Mock service stopped successfully"))
-}
 
 func main() {
     http.HandleFunc("/createMockService", createMockServiceHandler)
     http.HandleFunc("/getMockServicesInfo", getMockServicesInfoHandler)
-    http.HandleFunc("/stopMockService", stopMockServiceHandler)
 
     log.Fatal(http.ListenAndServe(":7000", nil))
 }
