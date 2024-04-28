@@ -24,7 +24,7 @@ type MockServiceInfo struct {
 
 func createMockServiceHandler(w http.ResponseWriter, r *http.Request) {
 	// Отправляем запрос на получение порта
-	portParamResp, err := http.Get("http://127.0.0.1:9000/port")
+	portParamResp, err := http.Get("http://45.140.178.234:9000/port")
 	if err != nil {
 			// Обработка ошибки при выполнении запроса
 			fmt.Println("Ошибка при выполнении запроса:", err)
@@ -83,7 +83,7 @@ func createMockServiceHandler(w http.ResponseWriter, r *http.Request) {
 
 	mutex.Lock()
 	defer mutex.Unlock()
-	Registry[strconv.Itoa(mockPort)] = fmt.Sprintf("http://localhost:%d", mockPort)
+	Registry[strconv.Itoa(mockPort)] = fmt.Sprintf("http://45.140.178.234:%d", mockPort)
 
 	fmt.Printf("Mock service created successfully! Port: %d\n", mockPort)
 
